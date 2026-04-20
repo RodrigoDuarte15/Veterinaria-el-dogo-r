@@ -18,17 +18,24 @@ function App() {
     { id: 2, nombre: 'Oliver', especie: 'Gato' }
   ]); // Estado para clientes
   const nombreApp = "El Dogo - Gestión de Pacientes";
-  // 3. El componente DEBE devolver el JSX (lo que se va a ver en pantalla)
-
+  // 3. El componente DEBE devolver el JSX (lo que se va a ver en pantalla) }
 
   const agregarCliente = (nuevoCliente) => {
     setClientes([...clientes, nuevoCliente]);
-  }
+
+  const eliminarCliente = (clienteId) => {
+    const listaActualizada = clientes.filter(cliente => 
+      cliente.id !== clienteId);
+
+    setClientes(listaActualizada);
+  };
+
+  
   const agregarMascota = (nuevaMascota) => {
     setMascotas([...mascotas, nuevaMascota]);
 
-  }
-
+  };
+  
   return (
     <div>
       {/* Esto es JSX. Parece HTML, ¡pero nos permite meter variables de JS!
@@ -50,9 +57,10 @@ Para ello, usamos llaves { }
       <FormularioCliente onClienteAgregado={agregarCliente} />
       <ul>
         {clientes.map((cliente) => (
-          <ClienteItem key={cliente.id} cliente={cliente} />
-        ))
-        }
+          <ClienteItem key={cliente.id} 
+          cliente={cliente}
+          onEliminar={eliminarCliente}/>
+        ))}
       </ul>
       <hr />
       <h2>Mascotas Actuales</h2>
