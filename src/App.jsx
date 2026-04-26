@@ -22,12 +22,42 @@ function App() {
 
   const agregarCliente = (nuevoCliente) => {
     setClientes([...clientes, nuevoCliente]);
+    };
 
   const eliminarCliente = (clienteId) => {
     const listaActualizada = clientes.filter(cliente => 
       cliente.id !== clienteId);
 
     setClientes(listaActualizada);
+  };
+
+  const eliminarMascota = (mascotaId) => {
+    const listaActualizadaMascota = mascotas.filter(mascota => 
+      mascota.id !== mascotaId);
+
+    setMascotas(listaActualizadaMascota);
+  };
+
+  const actualizarCliente = (clienteActualizado) => {
+    const listaActualizada = clientes.map(cliente => {
+      if(cliente.id == clienteActualizado.id) {
+        return clienteActualizado
+      }
+      return cliente;
+    });
+
+    setClientes(listaActualizada)
+    }
+
+  const actualizarMascota = (mascotaActualizada) => {
+    const listaActualizadaMascota = mascotas.map(mascota => {
+      if(mascota.id == mascotaActualizada.id) {
+        return mascotaActualizada
+      }
+      return mascota;
+    });
+
+    setMascotas(listaActualizadaMascota);
   };
 
   
@@ -59,7 +89,9 @@ Para ello, usamos llaves { }
         {clientes.map((cliente) => (
           <ClienteItem key={cliente.id} 
           cliente={cliente}
-          onEliminar={eliminarCliente}/>
+          onEliminar={eliminarCliente}
+          onGuardar={actualizarCliente}
+          />
         ))}
       </ul>
       <hr />
@@ -67,7 +99,11 @@ Para ello, usamos llaves { }
       <FormularioMascota onMascotaAgregada={agregarMascota} />
       <ul>
         {mascotas.map((mascota) => (
-          <MascotaItem key={mascota.id} mascota={mascota} />
+          <MascotaItem key={mascota.id} 
+          mascota={mascota} 
+          onEliminar={eliminarMascota}
+          onGuardar={actualizarMascota}
+          />
         ))
         }
       </ul>
