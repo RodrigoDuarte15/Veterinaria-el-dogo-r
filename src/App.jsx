@@ -1,14 +1,13 @@
 // src/App.jsx
 import { useState } from 'react';
-import FormularioCliente from './components/FormularioCliente'; // Importamos el componente del formulario
+import FormularioCliente from './components/FormularioCliente';
 import FormularioMascota from './components/FormularioMascota';
-import ClienteItem from './components/Clienteitem'; // Importamos el componente para mostrar cada cliente
+import ClienteItem from './components/Clienteitem';
 import MascotaItem from './components/Mascotaitem';
-import './App.css'; // Asume que tienes un archivo CSS para estilos
-// 1. Definimos nuestro componente principal
-// Es una función que, por convención, empieza con Mayúscula.
+import Login from './components/login'; // Asegúrate que el archivo se llame login.js o login.jsx
+import './App.css';
+
 function App() {
-  // 2. Aquí dentro va la lógica de JavaScript (aún simple)
   const [clientes, setClientes] = useState([
     { id: 1, nombre: 'Juan Pérez', telefono: '1123456789' },
     { id: 2, nombre: 'Ana Gómez', telefono: '11987654321' }
@@ -16,99 +15,91 @@ function App() {
   const [mascotas, setMascotas] = useState([
     { id: 1, nombre: 'Tobi', especie: 'Perro' },
     { id: 2, nombre: 'Oliver', especie: 'Gato' }
-  ]); // Estado para clientes
+  ]);
+
+  const [estaLogeado, setEstaLogeado] = useState(false);
   const nombreApp = "El Dogo - Gestión de Pacientes";
-  // 3. El componente DEBE devolver el JSX (lo que se va a ver en pantalla) }
 
-  const agregarCliente = (nuevoCliente) => {
-    setClientes([...clientes, nuevoCliente]);
-    };
-
+  // --- Funciones de Lógica ---
+  const agregarCliente = (nuevoCliente) => setClientes([...clientes, nuevoCliente]);
+  
   const eliminarCliente = (clienteId) => {
-    const listaActualizada = clientes.filter(cliente => 
-      cliente.id !== clienteId);
-
-    setClientes(listaActualizada);
-  };
-
-  const eliminarMascota = (mascotaId) => {
-    const listaActualizadaMascota = mascotas.filter(mascota => 
-      mascota.id !== mascotaId);
-
-    setMascotas(listaActualizadaMascota);
+    setClientes(clientes.filter(cliente => cliente.id !== clienteId));
   };
 
   const actualizarCliente = (clienteActualizado) => {
-    const listaActualizada = clientes.map(cliente => {
-      if(cliente.id == clienteActualizado.id) {
-        return clienteActualizado
-      }
-      return cliente;
-    });
+    setClientes(clientes.map(c => c.id === clienteActualizado.id ? clienteActualizado : c));
+  };
 
-    setClientes(listaActualizada)
-    }
+  const agregarMascota = (nuevaMascota) => setMascotas([...mascotas, nuevaMascota]);
+
+  const eliminarMascota = (mascotaId) => {
+    setMascotas(mascotas.filter(m => m.id !== mascotaId));
+  };
 
   const actualizarMascota = (mascotaActualizada) => {
-    const listaActualizadaMascota = mascotas.map(mascota => {
-      if(mascota.id == mascotaActualizada.id) {
-        return mascotaActualizada
-      }
-      return mascota;
-    });
-
-    setMascotas(listaActualizadaMascota);
+    setMascotas(mascotas.map(m => m.id === mascotaActualizada.id ? mascotaActualizada : m));
   };
 
-  
-  const agregarMascota = (nuevaMascota) => {
-    setMascotas([...mascotas, nuevaMascota]);
+  const manejadorLogin = (estado) => setEstaLogeado(estado);
 
-  };
-  
   return (
-    <div>
-      {/* Esto es JSX. Parece HTML, ¡pero nos permite meter variables de JS!
-Para ello, usamos llaves { }
-*/}
+    <div className='app-container'>
       <h1>{nombreApp}</h1>
-      <p>¡Bienvenido! Acá gestionarás a tus Clientes y Mascotas.</p>
+      
+      {!estaLogeado ? (
+        /* Si NO está logueado, mostramos SOLOS el login */
+        <Login onLoginExitoso={manejadorLogin} />
+      ) : (
+        /* Si ESTÁ logueado, mostramos todo el dashboard */
+        <>
+          <p>¡Bienvenido! Acá gestionarás a tus Clientes y Mascotas.</p>
+          <div className="stats">
+            <p>Total de clientes: <strong>{clientes.length}</strong></p>
+            <p>Total de mascotas: <strong>{mascotas.length}</strong></p>
+          </div>
 
-      <p>Total de clientes registrados: ** {clientes.length} **</p>
-      <p>Total de mascotas registrados: ** {mascotas.length} **</p>
+          <button className="desloguearse" onClick={() => setEstaLogeado(false)}>
+            Cerrar Sesión
+          </button>
 
-      <section>
-        {/* Placeholder para Clientes y Mascotas */}
-        <h2>Gestión de Clientes</h2>
-        <h2>Gestión de Mascotas</h2>
-      </section>
-      <hr />
-      <h2>Clientes Actuales</h2>
-      <FormularioCliente onClienteAgregado={agregarCliente} />
-      <ul>
-        {clientes.map((cliente) => (
-          <ClienteItem key={cliente.id} 
-          cliente={cliente}
-          onEliminar={eliminarCliente}
-          onGuardar={actualizarCliente}
-          />
-        ))}
-      </ul>
-      <hr />
-      <h2>Mascotas Actuales</h2>
-      <FormularioMascota onMascotaAgregada={agregarMascota} />
-      <ul>
-        {mascotas.map((mascota) => (
-          <MascotaItem key={mascota.id} 
-          mascota={mascota} 
-          onEliminar={eliminarMascota}
-          onGuardar={actualizarMascota}
-          />
-        ))
-        }
-      </ul>
+          <hr />
+
+          <section className="gestion-seccion">
+            <h2>Gestión de Clientes</h2>
+            <FormularioCliente onClienteAgregado={agregarCliente} />
+            <ul>
+              {clientes.map((cliente) => (
+                <ClienteItem 
+                  key={cliente.id} 
+                  cliente={cliente}
+                  onEliminar={eliminarCliente}
+                  onGuardar={actualizarCliente}
+                />
+              ))}
+            </ul>
+          </section>
+
+          <hr />
+
+          <section className="gestion-seccion">
+            <h2>Gestión de Mascotas</h2>
+            <FormularioMascota onMascotaAgregada={agregarMascota} />
+            <ul>
+              {mascotas.map((mascota) => (
+                <MascotaItem 
+                  key={mascota.id} 
+                  mascota={mascota} 
+                  onEliminar={eliminarMascota}
+                  onGuardar={actualizarMascota}
+                />
+              ))}
+            </ul>
+          </section>
+        </>
+      )}
     </div>
   );
 }
-// 4. Exportamos el componente para poder usarlo en otro lugar (generalmente index.js)
+
 export default App;
