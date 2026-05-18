@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import FormularioMascota from './FormularioMascota';
 import MascotaItem from './Mascotaitem';
+import styles from './VistaMascota.module.css';
+import React from 'react';
 function VistaMascotas() {
 
     const [mascotas, setMascotas] = useState(() => {
@@ -29,10 +31,10 @@ function VistaMascotas() {
     }, [mascotas]);
 
     return (
-        <div>
+        <div className={styles.contenedorPrincipal}>
             <section>
-                <h2>Gestión de Mascotas</h2>
-                <p>Total de clientes: <strong>{mascotas.length}</strong></p>
+                <h2 className={styles.titulo}>Gestión de Mascotas</h2>
+                <p className={styles.contador}>Total de mascotas: <strong>{mascotas.length}</strong></p>
                 <FormularioMascota
                     clientes={clientes}
                     onMascotaAgregada={agregarMascota} />

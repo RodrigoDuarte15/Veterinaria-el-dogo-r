@@ -1,8 +1,7 @@
 import { useState } from "react";
-console.log("COMPONENTE MASCOTA CARGADO");
+import Tarjeta from "./Tarjeta";
 function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
-
-  const getDuenio = (id) => {
+const getDuenio = (id) => {
     const cliente = clientes.find((cliente) => cliente.id === id);
     return cliente ? cliente.nombre : "Dueño desconocido";
   };
@@ -14,7 +13,6 @@ function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
   const [razaEditada, setRazaEditada] = useState(mascota.raza);
   const [clienteIdEditado, setClienteIdEditado] = useState(mascota.clienteId);
 
-
   const manejadorEliminar = () => {
     if (window.confirm(`¿Confirma que desea eliminar a ${mascota.nombre}?`)) {
       onEliminar(mascota.id);
@@ -23,7 +21,7 @@ function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
 
   const manejadorEditar = () => {
     setEsEdicion(true);
-  }
+  };
 
   const manejadorGuardar = (e) => {
     e.preventDefault();
@@ -33,7 +31,7 @@ function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
       nombre: nombreEditado,
       especie: especieEditada,
       raza: razaEditada,
-      clienteId: Number(clienteIdEditado)
+      clienteId: Number(clienteIdEditado),
     };
 
     onGuardar(mascotaActualizada);
@@ -41,55 +39,52 @@ function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
     setEsEdicion(false);
   };
   return (
-    <li key={mascota.id}>
-      {esEdicion ? (
-        <form onSubmit={manejadorGuardar} >
-          <input
-            type="text"
-            value={nombreEditado}
-            onChange={(e) => setNombreEditado(e.target.value)}
-          />
+      <li key={mascota.id}>
+        {esEdicion ? (
+          <form onSubmit={manejadorGuardar}>
+            <input
+              type="text"
+              value={nombreEditado}
+              onChange={(e) => setNombreEditado(e.target.value)}
+            />
 
-          <input
-            type="text"
-            value={especieEditada}
-            onChange={(e) => setEspecieEditada(e.target.value)}
-          />
+            <input
+              type="text"
+              value={especieEditada}
+              onChange={(e) => setEspecieEditada(e.target.value)}
+            />
 
-          <input
-            type="text"
-            value={razaEditada}
-            onChange={(e) => setRazaEditada(e.target.value)}
-          />
-          <select
-            value={clienteIdEditado}
-            onChange={(e) => setClienteIdEditado(e.target.value)}
+            <input
+              type="text"
+              value={razaEditada}
+              onChange={(e) => setRazaEditada(e.target.value)}
+            />
+            <select
+              value={clienteIdEditado}
+              onChange={(e) => setClienteIdEditado(e.target.value)}
+            >
+              <option>-- Seleccione un dueño --</option>
+              {clientes.map((cliente) => (
+                <option key={cliente.id} value={cliente.id}>
+                  {cliente.nombre}
+                </option>
+              ))}
+            </select>
 
-          >
-            <option>-- Seleccione un dueño --</option>
-            {clientes.map((cliente) => (
-              <option key={cliente.id} value={cliente.id}>
-                {cliente.nombre}
-              </option>
-            ))}
-          </select>
-
-          <button type="submit">Guardar</button>
-          <button type="button" onClick={() => setEsEdicion(false)}>
-            Cancelar
-          </button>
-        </form>
-      ) : (
-        <div>
-          ** {mascota.nombre} ** 
-          - Especie: {mascota.especie}
-          - Raza: {mascota.raza}
-          - Dueño: {getDuenio(mascota.clienteId)}
-          <button onClick={manejadorEliminar}>🗑️Eliminar</button>
-          <button onClick={manejadorEditar}>Editar</button>
-        </div>
-      )}
-    </li >
+            <button type="submit">Guardar</button>
+            <button type="button" onClick={() => setEsEdicion(false)}>
+              Cancelar
+            </button>
+          </form>
+        ) : (
+          <Tarjeta>
+            ** {mascota.nombre} ** - Especie: {mascota.especie}- Raza:{" "}
+            {mascota.raza}- Dueño: {getDuenio(mascota.clienteId)}
+            <button onClick={manejadorEliminar}>🗑️Eliminar</button>
+            <button onClick={manejadorEditar}>Editar</button>
+          </Tarjeta>
+        )}
+      </li>  
   );
 }
 

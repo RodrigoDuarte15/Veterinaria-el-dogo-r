@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import FormularioCliente from './FormularioCliente';
 import ClienteItem from './Clienteitem';
+import React from 'react';
+import styles from './VistaClientes.module.css';
+ 
+
 function VistaClientes() {
 
     const [clientes, setClientes] = useState(() => {
@@ -20,16 +24,16 @@ function VistaClientes() {
     };
 
     useEffect(() => {
-        console.log("Detectando cambios en la lista de clientes. !Guardando!");
+        console.log("Detectando cambios en la lista de clientes. guardando...");
         localStorage.setItem('clientesDogo', JSON.stringify(clientes));
     }, [clientes]);
 
 
     return (
-        <div>
+        <div className={styles.contenedorPrincipal}>
             <section>
-                <h2>Gestión de Clientes</h2>
-                <p>Total de clientes: <strong>{clientes.length}</strong></p>
+                <h2 className={styles.titulo}>Gestión de Clientes</h2>
+                <p className={styles.contador}>Total de clientes: <strong>{clientes.length}</strong></p>
                 <hr />
                 <FormularioCliente onClienteAgregado={agregarCliente} />
                 <ul>
@@ -45,8 +49,8 @@ function VistaClientes() {
             </section>
         </div>
     )
-
-}
+}     
+    
 
 
 export default VistaClientes;
