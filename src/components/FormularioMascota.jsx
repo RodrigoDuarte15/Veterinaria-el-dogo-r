@@ -1,9 +1,11 @@
 import { useState } from "react";
 
-function FormularioMascota({onMascotaAgregada}) {
+function FormularioMascota({clientes, onMascotaAgregada}) {
 
     const [nombre, setNombre] = useState("");
     const [especie, setEspecie] = useState("");
+    const [raza, setRaza] = useState("");
+    const [clienteId, setClienteId] = useState("");
 
     const manejadorNombre = (e) => {
         setNombre(e.target.value);
@@ -16,15 +18,17 @@ function FormularioMascota({onMascotaAgregada}) {
     const manejadorEnvio = (e) => {
         e.preventDefault();
 
-        if (nombre.trim() === "" || especie.trim() === "") {
+        if (nombre.trim() === "" || especie.trim() === "" || raza.trim() === "" || clienteId.trim() === "") {
             alert("Por favor, complete los datos.");
             return;
         }
 
         const nuevaMascota = {
             id: Date.now(),
-            nombre: nombre,
-            especie: especie,
+            nombre,
+            especie,
+            raza,
+            clienteId: Number(clienteId)
         };
 
         console.log("Nueva mascota registrada:", nuevaMascota);
@@ -33,25 +37,58 @@ function FormularioMascota({onMascotaAgregada}) {
 
         setNombre("");
         setEspecie("");
+        setRaza("");
+        setClienteId("");
     }
 
     return (
         <form onSubmit={manejadorEnvio}>
             <h3>Nueva Mascota:</h3>
-            <label htmlFor="">Nombre de la Mascota</label>
-            <input
-                type="text"
-                value={nombre}
-                onChange={manejadorNombre}
-                required 
-            />
-            <label htmlFor="">Especie</label>
-            <input
-                type="text"
-                value={especie}
-                onChange={manejadorEspecie}
-                required 
-            />
+            <label>
+                Dueño: 
+                <select
+                value={clienteId}
+                    onChange={(e) => setClienteId(e.target.value)}
+                    required
+                    
+                
+                >
+                    <option value="">-- Seleccione un dueño --</option>
+                    {clientes.map((cliente) => (
+                        <option 
+                        key={cliente.id} 
+                        value={cliente.id}
+                        >
+                            {cliente.nombre}
+                        </option>
+                    ))}
+
+                </select>
+            </label>
+            <label>
+                Nombre:
+                <input type="text"
+                 value={nombre} 
+                 onChange={(e) => setNombre(e.target.value)}
+                 required
+                />
+            </label>
+            <label>
+                Especie:
+                <input type="text"
+                 value={especie} 
+                 onChange={(e) => setEspecie(e.target.value)}
+                 required
+                />
+            </label>
+            <label>
+                Raza:
+                <input type="text"
+                 value={raza} 
+                 onChange={(e) => setRaza(e.target.value)}
+                 required
+                />
+            </label>
             <button type="submit">Registrar Mascota</button>
         </form>
     );    

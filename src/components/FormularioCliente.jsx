@@ -23,7 +23,7 @@ function FormularioCliente({onClienteAgregado}) {
 
         const nuevoCliente = {
             id: Date.now(),
-            nombre: nombre,
+            nombre,
             telefono: telefono,
         };
 
