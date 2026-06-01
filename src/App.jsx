@@ -11,9 +11,9 @@ import VistaConfiguracion from './components/VistaConfiguracion';
 import './App.css';
 
 function App() {
-  const [estaLogeado, setEstaLogeado] = useState(false);
   const nombreApp = "El Dogo - Gestión de Veterinaria";
 
+  const [estaLogeado, setEstaLogeado] = useState(false);   
 
   const manejadorLogin = (estado) => setEstaLogeado(estado);
 

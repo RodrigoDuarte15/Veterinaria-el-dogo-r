@@ -1,12 +1,11 @@
 import { useState } from "react";
-function ClienteItem({ cliente, onEliminar, onGuardar}) {
-
+import { Link } from "react-router-dom";
+function ClienteItem({ cliente, onEliminar, onGuardar }) {
   const [esEdicion, setEsEdicion] = useState(false);
 
   const [nombreEditado, setNombreEditado] = useState(cliente.nombre);
   const [telefonoEditado, setTelefonoEditado] = useState(cliente.telefono);
-  
-  
+
   const manejadorEliminar = () => {
     if (window.confirm(`¿Confirma que desea eliminar a ${cliente.nombre}?`)) {
       onEliminar(cliente.id);
@@ -14,8 +13,8 @@ function ClienteItem({ cliente, onEliminar, onGuardar}) {
   };
 
   const manejadorEditar = () => {
-    setEsEdicion (true);
-  }
+    setEsEdicion(true);
+  };
 
   const manejadorGuardar = (e) => {
     e.preventDefault();
@@ -23,7 +22,7 @@ function ClienteItem({ cliente, onEliminar, onGuardar}) {
     const clienteActualizado = {
       ...cliente,
       nombre: nombreEditado,
-      telefono: telefonoEditado
+      telefono: telefonoEditado,
     };
 
     onGuardar(clienteActualizado);
@@ -33,32 +32,36 @@ function ClienteItem({ cliente, onEliminar, onGuardar}) {
 
   return (
     <li>
-{esEdicion ? (
-  <form onSubmit={manejadorGuardar}>
-    <input 
-      type="text" 
-      value={nombreEditado}
-      onChange={(e) => setNombreEditado(e.target.value)} 
-    />
+      {esEdicion ? (
+        <form onSubmit={manejadorGuardar}>
+          <input
+            type="text"
+            value={nombreEditado}
+            onChange={(e) => setNombreEditado(e.target.value)}
+          />
 
-    <input 
-      type="text" 
-      value={telefonoEditado}
-      onChange={(e) => setTelefonoEditado(e.target.value)} 
-    />
+          <input
+            type="text"
+            value={telefonoEditado}
+            onChange={(e) => setTelefonoEditado(e.target.value)}
+          />
 
-    <button type="submit">Guardar</button>
-    <button type="button" onClick={() => setEsEdicion(false)}>
-      Cancelar
-    </button>
-  </form>
-  ): (
-  <div>
-    {cliente.nombre} - Tel: {cliente.telefono}
-    <button onClick={manejadorEliminar}>🗑️Eliminar</button>
-    <button onClick={manejadorEditar}>Editar</button>
-  </div>
-)}
+          <button type="submit">Guardar</button>
+          <button type="button" onClick={() => setEsEdicion(false)}>
+            Cancelar
+          </button>
+        </form>
+      ) : (
+        <div>
+          <Link to={`/clientes/${cliente.id}`}>
+            {cliente.nombre}
+            <strong> {cliente.nombre} </strong>
+          </Link>
+          - Telefono: {cliente.telefono}
+          <button onClick={manejadorEliminar}>🗑️Eliminar</button>
+          <button onClick={manejadorEditar}>Editar</button>
+        </div>
+      )}
     </li>
   );
 }

@@ -8,7 +8,7 @@ import styles from './VistaClientes.module.css';
 function VistaClientes() {
 
     const [clientes, setClientes] = useState(() => {
-        const datosGuardados = localStorage.getItem('clientesDogo') | [];
+        const datosGuardados = localStorage.getItem('clientesDogo') || [];
         return datosGuardados ? JSON.parse(datosGuardados) : [];
     });
 
