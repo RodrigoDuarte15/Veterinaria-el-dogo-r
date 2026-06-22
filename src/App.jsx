@@ -6,8 +6,11 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './components/login'; // Asegúrate que el archivo se llame login.js o login.jsx
 import Navegacion from './components/Navegacion';
 import VistaClientes from './components/VistaClientes';
+import VistaDetalleCliente from './components/VistaDetalleCliente';
 import VistaMascotas from './components/VistaMascotas';
 import VistaConfiguracion from './components/VistaConfiguracion';
+import { VeterinariaProvider } from './context/VeterinariaContext';
+
 import './App.css';
 
 function App() {
@@ -24,16 +27,19 @@ function App() {
 
       {estaLogeado ? (
         /* Si NO está logueado, mostramos SOLOS el login */
-        <>
+        <VeterinariaProvider>
           <Navegacion />
 
           <Routes>
             <Route path="/" element={<VistaClientes />} />
+            <Route path="/clientes/:id" element={
+              <VistaDetalleCliente 
+              />} />
             <Route path="/mascotas" element={<VistaMascotas />} />
             <Route path="/config" element={<VistaConfiguracion />} />
             <Route path="*" element={<h2>404 - Página no encontrada</h2>} />
           </Routes>
-        </>
+        </VeterinariaProvider>
       ) : (
         <div>
           <Login onLoginExitoso={manejadorLogin} />

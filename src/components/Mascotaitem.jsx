@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import Tarjeta from "./Tarjeta";
 function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
+  console.log("Clientes:", clientes);
 const getDuenio = (id) => {
     const cliente = clientes.find((cliente) => cliente.id === id);
     return cliente ? cliente.nombre : "Dueño desconocido";

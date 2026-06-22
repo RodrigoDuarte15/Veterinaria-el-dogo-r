@@ -1,34 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { VeterinariaContext } from '../contexto/VeterinariaContext';
 import FormularioMascota from './FormularioMascota';
 import MascotaItem from './Mascotaitem';
 import styles from './VistaMascota.module.css';
 import React from 'react';
 function VistaMascotas() {
 
-    const [mascotas, setMascotas] = useState(() => {
-        const datosMascotaGuardados = localStorage.getItem('mascotasDogo') | [];
-        return datosMascotaGuardados ? JSON.parse(datosMascotaGuardados) : [];
-    });
-
-    const [clientes] = useState(() => {
-        const clientesGuardados = localStorage.getItem('clientesDogo') | [];
-        return clientesGuardados ? JSON.parse(clientesGuardados) : [];
-    });
-
-
-    const agregarMascota = (nuevaMascota) => setMascotas([...mascotas, nuevaMascota]);
-
-    const eliminarMascota = (mascotaId) => {
-        setMascotas(mascotas.filter(m => m.id !== mascotaId));
-    };
-
-    const actualizarMascota = (mascotaActualizada) => {
-        setMascotas(mascotas.map(m => m.id === mascotaActualizada.id ? mascotaActualizada : m));
-    };
-    useEffect(() => {
-        console.log("Detectando cambios en la lista de mascotas. !Guardando!");
-        localStorage.setItem('mascotasDogo', JSON.stringify(mascotas));
-    }, [mascotas]);
+    const { mascotas, agregarMascota, eliminarMascota, actualizarMascota, clientes } = useContext(VeterinariaContext);
 
     return (
         <div className={styles.contenedorPrincipal}>
