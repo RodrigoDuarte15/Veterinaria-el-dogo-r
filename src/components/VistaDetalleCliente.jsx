@@ -1,7 +1,7 @@
 // src/components/VistaDetalleCliente.jsx
 import React from "react";
 import { useContext } from 'react';
-import { VeterinariaContext } from '../contexto/VeterinariaContext';
+import { VeterinariaContext } from '../context/VeterinariaContext';
 // Importamos las herramientas clave: useParams para leer la URL
 import { useParams, Link } from "react-router-dom";
 function VistaDetalleCliente() {

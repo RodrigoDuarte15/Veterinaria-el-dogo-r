@@ -9,7 +9,7 @@ import VistaClientes from './components/VistaClientes';
 import VistaDetalleCliente from './components/VistaDetalleCliente';
 import VistaMascotas from './components/VistaMascotas';
 import VistaConfiguracion from './components/VistaConfiguracion';
-import { VeterinariaProvider } from './context/VeterinariaContext';
+import { VeterinariaProvider } from './context/VeterinariaProvider';
 
 import './App.css';
 

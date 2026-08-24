@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { VeterinariaContext } from '../contexto/VeterinariaContext';
+import { VeterinariaContext } from '../context/VeterinariaContext';
 import FormularioCliente from './FormularioCliente';
 import ClienteItem from './Clienteitem';
 import React from 'react';
