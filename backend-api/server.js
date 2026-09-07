@@ -1,24 +1,22 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import process from 'node:process';
-import clientesRoutes from './src/routes/clientes.routes.js';
-import mascotasRoutes from './src/routes/mascotas.routes.js';
-// Importaremos las rutas en el siguiente paso
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import rutasClientes from "./src/routes/clientes.routes.js";
+import rutasMascotas from "./src/routes/mascotas.routes.js";
+import enrutadorAutenticacion from "./src/routes/autenticacion.routes.js";
+
 dotenv.config();
-const app = express();
-const PORT = process.env.PORT || 4000; // El puerto 4000 es común para APIs
-// Middlewares
-app.use(cors()); // Permite peticiones desde el frontend de React (puerto 5173/3000)
-app.use(express.json()); // Permite a Express leer JSON en el body de las peticiones
-app.use('/api/clientes', clientesRoutes);
-app.use('/api/mascotas', mascotasRoutes);
-// Ruta de prueba
-app.get('/', (req, res) => {
-    res.send('API de Veterinaria "El Dogo" Funcionando!');
-});
-// Aquí se agregarán las rutas específicas de la API (clientes, mascotas)
-// Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(` Servidor API escuchando en http://localhost:${PORT}`);
+
+const aplicacion = express();
+const puertoServidor = process.env.PORT || 4000;
+aplicacion.use(cors());
+aplicacion.use(express.json());
+// Registro de rutas en la API
+aplicacion.use("/api/autenticacion", enrutadorAutenticacion);
+aplicacion.use("/api/clientes", rutasClientes);
+aplicacion.use("/api/mascotas", rutasMascotas);
+aplicacion.listen(puertoServidor, () => {
+  console.log(
+    `Servidor de "El Dogo" escuchando en http://localhost:${puertoServidor}`,
+  );
 });

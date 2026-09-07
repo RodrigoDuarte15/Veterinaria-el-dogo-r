@@ -1,12 +1,11 @@
 import express from 'express';
 // Importamos las funciones del controlador
-import { getClientes, createCliente, updateCliente, getClienteById, deleteCliente } from '../controllers/cliente.controller.js';
+import { getClientes, createCliente, updateCliente } from '../controllers/cliente.controller.js';
+import { verificarTokenAcceso } from '../middlewares/autenticar.middleware.js';
 const router = express.Router();
 // Mapeo directo: URL -> Controlador
 router.get('/', getClientes);
-router.get('/:id', getClienteById);
-router.post('/', createCliente);
-router.put('/:id', updateCliente);
-// router.delete('/:id', deleteCliente); // Asumiendo que existe
-router.delete('/:id', deleteCliente);
+
+router.post('/',verificarTokenAcceso, createCliente);
+router.put('/:id' ,verificarTokenAcceso, updateCliente);
 export default router;
