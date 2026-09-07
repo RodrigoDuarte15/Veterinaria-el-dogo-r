@@ -1,6 +1,10 @@
-import React, { useState } from "react"; // 1. Agregado useState
-
-function Login({ onLoginExitoso }) {
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+// CAMBIO 1: Importamos nuestro Hook personalizado de Autenticacion
+import { useAutenticacion } from '../hooks/useAutenticacion';
+function Login() {
+    // CAMBIO 2: Ahora manejamos correo electrónico y contraseña
+    const [correoElectronico, setCorreoElectronico] = useState('');
     const [password, setPassword] = useState('');
     const PASSWORD_SECRETA = "elDogo2024";
 
