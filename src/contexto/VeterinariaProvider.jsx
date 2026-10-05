@@ -1,70 +1,97 @@
-import { useState, useEffect } from "react";
-import { VeterinariaContext } from "./VeterinariaContext";
-
+import { useState, useEffect } from 'react';
+import { VeterinariaContext } from './VeterinariaContext';
+import { useApi } from '../hooks/useApi'; // Importamos el nuevo hook
 export const VeterinariaProvider = ({ children }) => {
+const [clientes, setClientes] = useState([]);
+const [mascotas, setMascotas] = useState([]);
+const [isLoading, setIsLoading] = useState(true);
+// Instanciamos los hooks de API para cada endpoint
+const clientesApi = useApi('/clientes');
+const mascotasApi = useApi('/mascotas');
+const obtenerClientes = clientesApi.get;
+const obtenerMascotas = mascotasApi.get;
+// LÓGICA DE CARGA INICIAL (Más limpia)
+useEffect(() => {
+const fetchData = async () => {
+try {
+// Usamos el método get del hook para cargar datos
+const [clientesData, mascotasData] = await Promise.all([
+obtenerClientes(),
+obtenerMascotas()
 
-  // Clientes
-  const [clientes, setClientes] = useState(() => {
-    const datosGuardados = localStorage.getItem('clientesDogo') || [];
-    return datosGuardados ? JSON.parse(datosGuardados) : [];
-  });
-
-  // --- Funciones de Lógica ---
-  const agregarCliente = (nuevoCliente) => setClientes([...clientes, nuevoCliente]);
-
-  const eliminarCliente = (clienteId) => {
-    setClientes(clientes.filter(cliente => cliente.id !== clienteId));
-  };
-
-  const actualizarCliente = (clienteActualizado) => {
-    setClientes(clientes.map(c => c.id === clienteActualizado.id ? clienteActualizado : c));
-  };
-
-  useEffect(() => {
-    console.log("Detectando cambios en la lista de clientes. guardando...");
-    localStorage.setItem('clientesDogo', JSON.stringify(clientes));
-  }, [clientes]);
-
-
-  // Mascotas
-  const [mascotas, setMascotas] = useState(() => {
-        const datosMascotaGuardados = localStorage.getItem('mascotasDogo') | [];
-        return datosMascotaGuardados ? JSON.parse(datosMascotaGuardados) : [];
-    });
-
-
-    const agregarMascota = (nuevaMascota) => setMascotas([...mascotas, nuevaMascota]);
-
-    const eliminarMascota = (mascotaId) => {
-        setMascotas(mascotas.filter(m => m.id !== mascotaId));
-    };
-
-    const actualizarMascota = (mascotaActualizada) => {
-        setMascotas(mascotas.map(m => m.id === mascotaActualizada.id ? mascotaActualizada : m));
-    };
-    useEffect(() => {
-        console.log("Detectando cambios en la lista de mascotas. !Guardando!");
-        localStorage.setItem('mascotasDogo', JSON.stringify(mascotas));
-    }, [mascotas]);
-
-    const value = {
-      // clientes
-      clientes,
-      agregarCliente,
-      eliminarCliente,
-      actualizarCliente,
-
-      // mascotas
-      mascotas,
-      agregarMascota,
-      eliminarMascota,
-      actualizarMascota
-
-    }
-
-    return (
-      <VeterinariaContext.Provider value={value}>
-        {children}
-      </VeterinariaContext.Provider>
-    );
+]);
+setClientes(clientesData);
+setMascotas(mascotasData);
+} catch {
+// El error ya fue logueado en useApi
+} finally {
+setIsLoading(false);
 }
+};
+fetchData();
+}, [obtenerClientes, obtenerMascotas]);
+// FUNCIONES CRUD DE CLIENTES (Delegando la lógica HTTP al hook)
+const agregarCliente = async (nuevoCliente) => {
+try {
+// Usamos el método create del hook
+const data = await clientesApi.create(nuevoCliente);
+setClientes([...clientes, data]);
+} catch { /* El error ya fue logueado en useApi */ }
+};
+const actualizarCliente = async (clienteActualizado) => {
+try {
+// Usamos el método update
+await clientesApi.update(clienteActualizado.id, clienteActualizado);
+setClientes(clientes.map(cl =>
+cl.id === clienteActualizado.id ? clienteActualizado : cl
+));
+} catch { /* El error ya fue logueado en useApi */ }
+};
+const eliminarCliente = async (id) => {
+try {
+// Usamos el método remove
+await clientesApi.remove(id);
+setClientes(clientes.filter(cl => cl.id !== id));
+} catch { /* El error ya fue logueado en useApi */ }
+};
+
+// FUNCIONES CRUD DE MASCOTAS (Delegando la lógica HTTP al hook)
+const agregarMascota = async (nuevaMascota) => {
+try {
+const data = await mascotasApi.create(nuevaMascota);
+setMascotas([...mascotas, data]);
+} catch { /* El error ya fue logueado en useApi */ }
+};
+const actualizarMascota = async (mascotaActualizada) => {
+try {
+await mascotasApi.update(mascotaActualizada.id, mascotaActualizada);
+setMascotas(mascotas.map(mascota =>
+mascota.id === mascotaActualizada.id ? mascotaActualizada : mascota
+));
+} catch { /* El error ya fue logueado en useApi */ }
+};
+const eliminarMascota = async (id) => {
+try {
+await mascotasApi.remove(id);
+setMascotas(mascotas.filter(mascota => mascota.id !== id));
+} catch { /* El error ya fue logueado en useApi */ }
+};
+
+const value = {
+clientes,
+agregarCliente,
+actualizarCliente,
+eliminarCliente,
+mascotas,
+agregarMascota,
+actualizarMascota,
+eliminarMascota,
+isLoading
+};
+
+return (
+<VeterinariaContext.Provider value={value}>
+{children}
+</VeterinariaContext.Provider>
+);
+};
