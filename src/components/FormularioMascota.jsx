@@ -6,6 +6,7 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
     const [especie, setEspecie] = useState("");
     const [raza, setRaza] = useState("");
     const [clienteId, setClienteId] = useState("");
+    const [foto, setFoto] = useState(null);
 
     const manejadorNombre = (e) => {
         setNombre(e.target.value);
@@ -15,7 +16,11 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
         setEspecie(e.target.value);
     }
 
-    const manejadorEnvio = (e) => {
+    const manejarCambioImagen = (evento) => {
+        setFoto(evento.target.files?.[0] ?? null);
+    };
+
+    const manejadorEnvio = async (e) => {
         e.preventDefault();
 
         if (nombre.trim() === "" || especie.trim() === "" || raza.trim() === "" || clienteId.trim() === "") {
@@ -23,22 +28,29 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
             return;
         }
 
-        const nuevaMascota = {
-            id: Date.now(),
-            nombre,
-            especie,
-            raza,
-            clienteId: Number(clienteId)
-        };
+        const formulario = e.currentTarget;
+        const datosFormulario = new FormData();
+        datosFormulario.append("nombre", nombre.trim());
+        datosFormulario.append("especie", especie.trim());
+        datosFormulario.append("raza", raza.trim());
+        datosFormulario.append("clienteId", clienteId);
+        if (foto) {
+            datosFormulario.append("imagen", foto);
+        }
 
-        console.log("Nueva mascota registrada:", nuevaMascota);
-
-        onMascotaAgregada(nuevaMascota);
-
-        setNombre("");
-        setEspecie("");
-        setRaza("");
-        setClienteId("");
+        try {
+            await onMascotaAgregada(datosFormulario);
+            alert("¡Mascota guardada con éxito!");
+            setNombre("");
+            setEspecie("");
+            setRaza("");
+            setClienteId("");
+            setFoto(null);
+            formulario.reset();
+        } catch (error) {
+            console.error("Error al subir la mascota:", error);
+            alert("No se pudo guardar la mascota. Inténtelo de nuevo.");
+        }
     }
 
     return (
@@ -69,7 +81,7 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
                 Nombre:
                 <input type="text"
                  value={nombre} 
-                 onChange={(e) => setNombre(e.target.value)}
+                 onChange={manejadorNombre}
                  required
                 />
             </label>
@@ -77,7 +89,7 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
                 Especie:
                 <input type="text"
                  value={especie} 
-                 onChange={(e) => setEspecie(e.target.value)}
+                 onChange={manejadorEspecie}
                  required
                 />
             </label>
@@ -87,6 +99,14 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
                  value={raza} 
                  onChange={(e) => setRaza(e.target.value)}
                  required
+                />
+            </label>
+            <label>
+                Foto:
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={manejarCambioImagen}
                 />
             </label>
             <button type="submit">Registrar Mascota</button>

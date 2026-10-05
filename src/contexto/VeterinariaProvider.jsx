@@ -57,10 +57,9 @@ setClientes(clientes.filter(cl => cl.id !== id));
 
 // FUNCIONES CRUD DE MASCOTAS (Delegando la lógica HTTP al hook)
 const agregarMascota = async (nuevaMascota) => {
-try {
 const data = await mascotasApi.create(nuevaMascota);
 setMascotas([...mascotas, data]);
-} catch { /* El error ya fue logueado en useApi */ }
+return data;
 };
 const actualizarMascota = async (mascotaActualizada) => {
 try {

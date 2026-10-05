@@ -1,10 +1,9 @@
 // src/hooks/useApi.js
-import { useCallback } from "react";
 import api from "../api/axios";
 // Hook personalizado para envolver las llamadas a la API
 export const useApi = (endpoint) => {
   // Función genérica GET
-  const get = useCallback(async (id = "") => {
+  const get = async (id = "") => {
     try {
       const url = id ? `${endpoint}/${id}` : endpoint;
       const response = await api.get(url);
@@ -13,19 +12,22 @@ export const useApi = (endpoint) => {
       console.error(`Error al obtener ${endpoint}:`, error);
       throw error; // Lanzamos el error para que el Provider lo maneje
     }
-  }, [endpoint]);
+  };
   // Función genérica POST
-  const create = useCallback(async (data) => {
+  const create = async (data) => {
     try {
-      const response = await api.post(endpoint, data);
+      const configuracion = typeof FormData !== "undefined" && data instanceof FormData
+        ? { headers: { "Content-Type": "multipart/form-data" } }
+        : undefined;
+      const response = await api.post(endpoint, data, configuracion);
       return response.data;
     } catch (error) {
       console.error(`Error al crear ${endpoint}:`, error);
       throw error;
     }
-  }, [endpoint]);
+  };
   // Función genérica PUT
-  const update = useCallback(async (id, data) => {
+  const update = async (id, data) => {
     try {
       const response = await api.put(`${endpoint}/${id}`, data);
       return response.data;
@@ -33,15 +35,15 @@ export const useApi = (endpoint) => {
       console.error(`Error al actualizar ${endpoint}:`, error);
       throw error;
     }
-  }, [endpoint]);
+  };
   // Función genérica DELETE
-  const remove = useCallback(async (id) => {
+  const remove = async (id) => {
     try {
       await api.delete(`${endpoint}/${id}`);
     } catch (error) {
       console.error(`Error al eliminar ${endpoint}:`, error);
       throw error;
     }
-  }, [endpoint]);
+  };
   return { get, create, update, remove };
 };
