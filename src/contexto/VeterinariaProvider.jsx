@@ -46,17 +46,14 @@ cl.id === clienteActualizado.id ? clienteActualizado : cl
 } catch { /* El error ya fue logueado en useApi */ }
 };
 const eliminarCliente = async (id) => {
-try {
-// Usamos el método remove
 await clientesApi.remove(id);
-setClientes(clientes.filter(cl => cl.id !== id));
-} catch { /* El error ya fue logueado en useApi */ }
+setClientes(clientesActuales => clientesActuales.filter(cl => cl.id !== id));
 };
 
 // FUNCIONES CRUD DE MASCOTAS (Delegando la lógica HTTP al hook)
 const agregarMascota = async (nuevaMascota) => {
 const data = await mascotasApi.create(nuevaMascota);
-setMascotas([...mascotas, data]);
+setMascotas(mascotasActuales => [...mascotasActuales, data]);
 return data;
 };
 const actualizarMascota = async (mascotaActualizada) => {

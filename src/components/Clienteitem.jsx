@@ -7,9 +7,17 @@ function ClienteItem({ cliente, onEliminar, onGuardar }) {
   const [nombreEditado, setNombreEditado] = useState(cliente.nombre);
   const [telefonoEditado, setTelefonoEditado] = useState(cliente.telefono);
 
-  const manejadorEliminar = () => {
+  const manejadorEliminar = async () => {
     if (window.confirm(`¿Confirma que desea eliminar a ${cliente.nombre}?`)) {
-      onEliminar(cliente.id);
+      try {
+        await onEliminar(cliente.id);
+      } catch (error) {
+        window.alert(
+          error.response?.data?.message ||
+          error.response?.data?.mensaje ||
+          "No se pudo eliminar el cliente. Inténtelo de nuevo.",
+        );
+      }
     }
   };
 
@@ -68,7 +76,7 @@ function ClienteItem({ cliente, onEliminar, onGuardar }) {
       ) : (
         <>
           <div className={styles.detalleCliente}>
-            <Link to={`/clientes/${cliente.id}`} className={styles.nombreCliente}>
+            <Link to={`/cliente/${cliente.id}`} className={styles.nombreCliente}>
               <strong>{cliente.nombre} {cliente.apellido}</strong>
           </Link>
             <span className={styles.telefonoCliente}>Teléfono: {cliente.telefono}</span>

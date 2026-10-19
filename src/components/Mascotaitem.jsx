@@ -1,8 +1,9 @@
 
 import { useState } from "react";
 import Tarjeta from "./Tarjeta";
+import styles from "./VistaMascota.module.css";
+import api from "../api/axios";
 function MascotaItem({ clientes, mascota, onEliminar, onGuardar }) {
-  console.log("Clientes:", clientes);
 const getDuenio = (id) => {
     const cliente = clientes.find((cliente) => cliente.id === id);
     return cliente ? cliente.nombre : "Dueño desconocido";
@@ -41,9 +42,9 @@ const getDuenio = (id) => {
     setEsEdicion(false);
   };
   return (
-      <li key={mascota.id}>
+      <li className={styles.mascota}>
         {esEdicion ? (
-          <form onSubmit={manejadorGuardar} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <form onSubmit={manejadorGuardar} className={`form-layout ${styles.formEdicion}`}>
             <label className="field-label">
               Nombre
             <input
@@ -77,8 +78,9 @@ const getDuenio = (id) => {
               value={clienteIdEditado}
               onChange={(e) => setClienteIdEditado(e.target.value)}
               className="field-control"
+              required
             >
-              <option>-- Seleccione un dueño --</option>
+              <option value="">-- Seleccione un dueño --</option>
               {clientes.map((cliente) => (
                 <option key={cliente.id} value={cliente.id}>
                   {cliente.nombre}
@@ -100,14 +102,29 @@ const getDuenio = (id) => {
           </form>
         ) : (
           <Tarjeta>
-            ** {mascota.nombre} ** - Especie: {mascota.especie}- Raza:{" "}
-            {mascota.raza}- Dueño: {getDuenio(mascota.clienteId)}
-            <button className="btn-danger" onClick={manejadorEliminar}>
-              🗑️Eliminar
-            </button>
-            <button className="btn-secondary" onClick={manejadorEditar}>
-              Editar
-            </button>
+            <div className={styles.tarjetaMascota}>
+              {mascota.foto && (
+                <img
+                  className={styles.fotoMascota}
+                  src={new URL(mascota.foto, api.defaults.baseURL).href}
+                  alt={`Foto de ${mascota.nombre}`}
+                  loading="lazy"
+                />
+              )}
+              <div className={styles.detallesMascota}>
+                <span className={styles.nombreMascota}>{mascota.nombre}</span>
+                <span>Especie: {mascota.especie} · Raza: {mascota.raza}</span>
+                <span>Responsable: {getDuenio(mascota.clienteId)}</span>
+              </div>
+            </div>
+            <div className={styles.accionesMascota}>
+              <button type="button" className="btn-secondary" onClick={manejadorEditar}>
+                Editar
+              </button>
+              <button type="button" className="btn-danger" onClick={manejadorEliminar}>
+                Eliminar
+              </button>
+            </div>
           </Tarjeta>
         )}
       </li>  

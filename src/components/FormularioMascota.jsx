@@ -7,6 +7,7 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
     const [raza, setRaza] = useState("");
     const [clienteId, setClienteId] = useState("");
     const [foto, setFoto] = useState(null);
+    const [errorEnvio, setErrorEnvio] = useState("");
 
     const manejadorNombre = (e) => {
         setNombre(e.target.value);
@@ -29,6 +30,7 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
         }
 
         const formulario = e.currentTarget;
+        setErrorEnvio("");
         const datosFormulario = new FormData();
         datosFormulario.append("nombre", nombre.trim());
         datosFormulario.append("especie", especie.trim());
@@ -49,13 +51,17 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
             formulario.reset();
         } catch (error) {
             console.error("Error al subir la mascota:", error);
-            alert("No se pudo guardar la mascota. Inténtelo de nuevo.");
+            setErrorEnvio(
+                error.response?.data?.message ||
+                error.response?.data?.mensaje ||
+                "No se pudo guardar la mascota. Verifique los datos e inténtelo de nuevo."
+            );
         }
     }
 
     return (
         <form onSubmit={manejadorEnvio} className="form-layout">
-            <h3 className="form-title">Nueva Mascota:</h3>
+            <h3 className="form-title">Registrar mascota</h3>
             <label className="field-label">
                 Dueño: 
                 <select
@@ -106,16 +112,17 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
                 />
             </label>
             <label className="field-label">
-                Foto:
+                Foto (opcional)
                 <input
                     type="file"
                     accept="image/*"
                     onChange={manejarCambioImagen}
-                    className="field-control text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-slate-700 hover:file:bg-slate-200 dark:file:bg-slate-700 dark:file:text-slate-200 dark:hover:file:bg-slate-600"
+                    className="field-control"
                 />
             </label>
-            <button type="submit" className="btn-primary self-end">
-                Registrar Mascota
+            {errorEnvio && <p role="alert">{errorEnvio}</p>}
+            <button type="submit" className="btn-primary">
+                Guardar mascota
             </button>
         </form>
     );    

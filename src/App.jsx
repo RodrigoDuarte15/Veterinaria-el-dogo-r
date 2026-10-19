@@ -18,14 +18,14 @@ function VeterinariaApp() {
 return (
 // CAPA 1: Proveedor de Autenticación envolviendo TODA la app
 <ProveedorAutenticacion>
-<div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+<div className="app-shell">
 {/* Definición global de Rutas */}
 <Routes>
 {/* RUTA PÚBLICA: Pantalla de Login */}
 <Route
 path="/login"
 element={
-<main className="min-h-screen flex items-center justify-center p-4">
+<main className="login-page">
 <Login />
 </main>
 }
@@ -39,11 +39,11 @@ element={
       // CAPA 2: Proveedor de Datos (VeterinariaProvider) solo activo cuando el
       // usuario está autenticado
       <VeterinariaProvider>
-        <header className="sticky top-0 z-50 w-full backdrop-blur-lg bg-white/70 border-b border-slate-200 dark:bg-slate-950/70 dark:border-slate-800">
+        <header className="site-header">
           <Navegacion /> {/* ¡El botón de Salida ya vive aquí adentro! */}
         </header> 
         
-        <main className="container mx-auto px-4 py-8 max-w-7xl">
+        <main className="site-main">
           <Routes>
             <Route path="/" element={<Navigate to="/clientes" replace />} />
             <Route path="/clientes" element={<VistaClientes />} />
@@ -54,8 +54,8 @@ element={
             <Route
               path="*"
               element={
-                <div className="text-center py-20">
-                  <h2 className="text-3xl font-bold text-slate-700 dark:text-slate-200">
+                <div className="site-not-found">
+                  <h2>
                     404 | Página no encontrada
                   </h2>
                 </div>
