@@ -43,27 +43,40 @@ const getDuenio = (id) => {
   return (
       <li key={mascota.id}>
         {esEdicion ? (
-          <form onSubmit={manejadorGuardar}>
+          <form onSubmit={manejadorGuardar} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <label className="field-label">
+              Nombre
             <input
               type="text"
               value={nombreEditado}
               onChange={(e) => setNombreEditado(e.target.value)}
+              className="field-control"
             />
-
+            </label>
+            <label className="field-label">
+              Especie
             <input
               type="text"
               value={especieEditada}
               onChange={(e) => setEspecieEditada(e.target.value)}
+              className="field-control"
             />
-
+            </label>
+            <label className="field-label">
+              Raza
             <input
               type="text"
               value={razaEditada}
               onChange={(e) => setRazaEditada(e.target.value)}
+              className="field-control"
             />
+            </label>
+            <label className="field-label">
+              Dueño
             <select
               value={clienteIdEditado}
               onChange={(e) => setClienteIdEditado(e.target.value)}
+              className="field-control"
             >
               <option>-- Seleccione un dueño --</option>
               {clientes.map((cliente) => (
@@ -72,9 +85,16 @@ const getDuenio = (id) => {
                 </option>
               ))}
             </select>
+            </label>
 
-            <button type="submit">Guardar</button>
-            <button type="button" onClick={() => setEsEdicion(false)}>
+            <button type="submit" className="btn-primary">
+              Guardar
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => setEsEdicion(false)}
+            >
               Cancelar
             </button>
           </form>
@@ -82,8 +102,12 @@ const getDuenio = (id) => {
           <Tarjeta>
             ** {mascota.nombre} ** - Especie: {mascota.especie}- Raza:{" "}
             {mascota.raza}- Dueño: {getDuenio(mascota.clienteId)}
-            <button onClick={manejadorEliminar}>🗑️Eliminar</button>
-            <button onClick={manejadorEditar}>Editar</button>
+            <button className="btn-danger" onClick={manejadorEliminar}>
+              🗑️Eliminar
+            </button>
+            <button className="btn-secondary" onClick={manejadorEditar}>
+              Editar
+            </button>
           </Tarjeta>
         )}
       </li>  

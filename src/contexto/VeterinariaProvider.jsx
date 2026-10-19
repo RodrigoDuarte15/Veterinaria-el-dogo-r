@@ -32,11 +32,9 @@ fetchData();
 }, [obtenerClientes, obtenerMascotas]);
 // FUNCIONES CRUD DE CLIENTES (Delegando la lógica HTTP al hook)
 const agregarCliente = async (nuevoCliente) => {
-try {
-// Usamos el método create del hook
 const data = await clientesApi.create(nuevoCliente);
-setClientes([...clientes, data]);
-} catch { /* El error ya fue logueado en useApi */ }
+setClientes(clientesActuales => [...clientesActuales, data]);
+return data;
 };
 const actualizarCliente = async (clienteActualizado) => {
 try {

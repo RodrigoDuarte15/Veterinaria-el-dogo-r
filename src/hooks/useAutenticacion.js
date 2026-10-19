@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { ContextoAutenticacion } from "../context/AutenticacionContexto";
+import { AutenticacionContext } from "../contexto/AutenticacionContexto";
 export const useAutenticacion = () => {
-  const contexto = useContext(ContextoAutenticacion);
+  const contexto = useContext(AutenticacionContext);
   if (!contexto) {
     throw new Error(
       "useAutenticacion debe usarse dentro de un ProveedorAutenticacion",

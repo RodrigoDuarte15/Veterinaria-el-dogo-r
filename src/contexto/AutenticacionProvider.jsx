@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import clienteApi from "../api/axios";
 // Importamos el contexto puro desde su nuevo archivo
-import { AutenticacionContext } from "./AutenticacionContext";
+import { AutenticacionContext } from "./AutenticacionContexto";
 export const AutenticacionProvider = ({ children }) => {
   const [usuarioActual, setUsuarioActual] = useState(() => {
     const tokenGuardado = localStorage.getItem("tokenAcceso");

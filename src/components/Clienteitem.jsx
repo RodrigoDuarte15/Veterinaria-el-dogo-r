@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import styles from './VistaClientes.module.css';
 function ClienteItem({ cliente, onEliminar, onGuardar }) {
   const [esEdicion, setEsEdicion] = useState(false);
 
@@ -31,36 +32,56 @@ function ClienteItem({ cliente, onEliminar, onGuardar }) {
   };
 
   return (
-    <li>
+    <li className={styles.cliente}>
       {esEdicion ? (
-        <form onSubmit={manejadorGuardar}>
+        <form onSubmit={manejadorGuardar} className={styles.formEdicion}>
+          <label className="field-label">
+            Nombre
           <input
             type="text"
             value={nombreEditado}
             onChange={(e) => setNombreEditado(e.target.value)}
+            className="field-control"
           />
-
+          </label>
+          <label className="field-label">
+            Teléfono
           <input
             type="text"
             value={telefonoEditado}
             onChange={(e) => setTelefonoEditado(e.target.value)}
+            className="field-control"
           />
+          </label>
 
-          <button type="submit">Guardar</button>
-          <button type="button" onClick={() => setEsEdicion(false)}>
+          <button type="submit" className="btn-primary">
+            Guardar
+          </button>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={() => setEsEdicion(false)}
+          >
             Cancelar
           </button>
         </form>
       ) : (
-        <div>
-          <Link to={`/clientes/${cliente.id}`}>
-            {cliente.nombre}
-            <strong> {cliente.nombre} </strong>
+        <>
+          <div className={styles.detalleCliente}>
+            <Link to={`/clientes/${cliente.id}`} className={styles.nombreCliente}>
+              <strong>{cliente.nombre} {cliente.apellido}</strong>
           </Link>
-          - Telefono: {cliente.telefono}
-          <button onClick={manejadorEliminar}>🗑️Eliminar</button>
-          <button onClick={manejadorEditar}>Editar</button>
-        </div>
+            <span className={styles.telefonoCliente}>Teléfono: {cliente.telefono}</span>
+          </div>
+          <div className={styles.accionesCliente}>
+            <button className="btn-secondary" onClick={manejadorEditar}>
+              Editar
+            </button>
+            <button className="btn-danger" onClick={manejadorEliminar}>
+              Eliminar
+            </button>
+          </div>
+        </>
       )}
     </li>
   );

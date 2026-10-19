@@ -32,15 +32,10 @@ function Login() {
   };
   return (
     <div
-      className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-
-hidden border border-slate-100 dark:border-slate-700"
+      className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700"
     >
       <div className="px-8 py-10">
         <div className="text-center mb-10">
-          <div
-            className="mx-auto h-16 w-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex
-items-center justify-center mb-4 text-3xl shadow-sm"
-          ></div>
           <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
             Bienvenido a El Dogo
           </h2>
@@ -51,8 +46,7 @@ items-center justify-center mb-4 text-3xl shadow-sm"
         {/* CAMBIO 6: Cartel interactivo para mostrar errores de autenticación */}
         {mensajeError && (
           <div
-            className="mb-6 p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded-
-lg text-center"
+            className="mb-6 p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded-lg text-center"
           >
             {mensajeError}
           </div>
@@ -62,8 +56,7 @@ lg text-center"
           <div>
             <label
               htmlFor="correo"
-              className="block text-sm font-medium text-slate-700 dark:text-
-slate-200 mb-2"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
             >
               Correo Electrónico
             </label>
@@ -73,10 +66,7 @@ slate-200 mb-2"
               placeholder="admin@eldogo.com"
               value={correoElectronico}
               onChange={(e) => setCorreoElectronico(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-
-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-
-outline-none transition-all duration-200 text-slate-900 dark:text-white placeholder-slate-400"
+              className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200 text-slate-900 dark:text-white placeholder-slate-400"
               required
             />
           </div>
@@ -94,10 +84,7 @@ dark:text-slate-200 mb-2"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-
-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-
-outline-none transition-all duration-200 text-slate-900 dark:text-white placeholder-slate-400"
+              className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200 text-slate-900 dark:text-white placeholder-slate-400"
               required
             />
           </div>
@@ -105,9 +92,7 @@ outline-none transition-all duration-200 text-slate-900 dark:text-white placehol
           <button
             type="submit"
             disabled={cargando}
-            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400
-text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform
-hover:-translate-y-0.5"
+            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
           >
             {cargando ? "Verificando..." : "Ingresar"}
           </button>

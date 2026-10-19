@@ -54,13 +54,14 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
     }
 
     return (
-        <form onSubmit={manejadorEnvio}>
-            <h3>Nueva Mascota:</h3>
-            <label>
+        <form onSubmit={manejadorEnvio} className="form-layout">
+            <h3 className="form-title">Nueva Mascota:</h3>
+            <label className="field-label">
                 Dueño: 
                 <select
                 value={clienteId}
                     onChange={(e) => setClienteId(e.target.value)}
+                    className="field-control"
                     required
                     
                 
@@ -77,39 +78,45 @@ function FormularioMascota({clientes, onMascotaAgregada}) {
 
                 </select>
             </label>
-            <label>
+            <label className="field-label">
                 Nombre:
                 <input type="text"
                  value={nombre} 
                  onChange={manejadorNombre}
+                 className="field-control"
                  required
                 />
             </label>
-            <label>
+            <label className="field-label">
                 Especie:
                 <input type="text"
                  value={especie} 
                  onChange={manejadorEspecie}
+                 className="field-control"
                  required
                 />
             </label>
-            <label>
+            <label className="field-label">
                 Raza:
                 <input type="text"
                  value={raza} 
                  onChange={(e) => setRaza(e.target.value)}
+                 className="field-control"
                  required
                 />
             </label>
-            <label>
+            <label className="field-label">
                 Foto:
                 <input
                     type="file"
                     accept="image/*"
                     onChange={manejarCambioImagen}
+                    className="field-control text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-slate-700 hover:file:bg-slate-200 dark:file:bg-slate-700 dark:file:text-slate-200 dark:hover:file:bg-slate-600"
                 />
             </label>
-            <button type="submit">Registrar Mascota</button>
+            <button type="submit" className="btn-primary self-end">
+                Registrar Mascota
+            </button>
         </form>
     );    
 }

@@ -2,11 +2,11 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 // 1. IMPORTAMOS LOS PROVEEDORES
 // El proveedor de autenticación gestiona el Token y el usuario
-import { ProveedorAutenticacion } from './context/AutenticacionContexto';
+import { AutenticacionProvider as ProveedorAutenticacion } from './contexto/AutenticacionProvider';
 // El proveedor de la veterinaria gestiona los datos de clientes y mascotas
-import { VeterinariaProvider } from './context/VeterinariaProvider';
+import { VeterinariaProvider } from './contexto/VeterinariaProvider';
 // 2. IMPORTAMOS EL COMPONENTE GUARDIA (RUTA PROTEGIDA)
-import { RutaProtegida } from './components/RutaProtegida';
+import { RutaProtegida } from './components/RutasProtegida';
 // 3. IMPORTAMOS COMPONENTES Y VISTAS
 import Navegacion from './components/Navegacion';
 import VistaClientes from './components/VistaClientes';
